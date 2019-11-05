@@ -9,19 +9,25 @@ app.use(express.json({ extended: false }))
 
 app.get('/', (req, res) => res.send('Hello'));
 
+const testdb = require('./config/keys').mongoURIbestb4test;
+const db = require('./config/keys').mongoURIbestb4dev;
+
 if (process.env.NODE_ENV === 'test') {
-  mongoose.connect('mongodb://localhost/testDatabase', {
+  mongoose.connect(testdb, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false
   })
+    .then( () => console.log("MongoDB test db connected"))
     .catch((err) => console.log(err));
 } else {
-  mongoose.connect('mongodb://localhost/bestB4', {
+  // mongoose.connect('mongodb://localhost/bestB4', {
+  mongoose.connect(db, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false
   })
+    .then( () => console.log("MongoDB dev db connected"))
     .catch((err) => console.log(err));
 }
 
