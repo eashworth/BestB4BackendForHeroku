@@ -46,20 +46,20 @@ if (process.env.NODE_ENV === 'test') {
 }
 
 // The current path is:
-app.use('/api/users', require('./app/routes/api/users'));
+app.use('/api/users', require('./routes/api/users'));
 
 // I want to require '/app/routes/api/users.js',
 // So I will use:
 // path.join(__dirname, './app', './routes/api/users')
 // app.use('/api/users', require(path.join(__dirname, './', './routes/api/users')));
 
-app.use('/api/auth', require('./app/routes/api/auth'));
+app.use('/api/auth', require('./routes/api/auth'));
 // app.use('/api/users', require(path.join(__dirname, './', './routes/api/auth')));
 
-app.use('/api/posts', require('./app/routes/api/posts'));
+app.use('/api/posts', require('./routes/api/posts'));
 // app.use('/api/users', require(path.join(__dirname, './', './routes/api/posts')));
 
-app.use('/api/login', require('./app/routes/api/login'));
+app.use('/api/login', require('./routes/api/login'));
 // app.use('/api/users', require(path.join(__dirname, './', './routes/api/login')));
 
 module.exports = app

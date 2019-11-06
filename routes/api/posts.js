@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const { check, validationResult } = require('express-validator');
-const auth = require('../../../middleware/auth');
-const Post = require('../../../models/Post')
+const auth = require('../../middleware/auth');
+const Post = require('../../models/Post')
 
 router.post('/', [auth, [
   check('description', 'Description is required')
