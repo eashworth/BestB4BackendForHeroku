@@ -1,6 +1,4 @@
 require('dotenv').config();
-const path = require('path');
-
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
@@ -12,58 +10,64 @@ app.use(express.json({ extended: false }))
 
 app.get('/', (req, res) => res.send('Hello'));
 
-const testdb = process.env.MONGO_URI_BESTB4_TEST;
+const remoteTestdb = process.env.MONGO_URI_BESTB4_TEST;
 const proddb = process.env.MONGO_URI_BESTB4_PROD;
-const devdb = process.env.MONGO_URI_BESTB4_DEV;
+const remoteDevdb = process.env.MONGO_URI_BESTB4_DEV;
 
 if (process.env.NODE_ENV === 'test') {
-  // mongoose.connect('mongodb://localhost/bestB4test', {
-  mongoose.connect(testdb, {
+  console.log("**********Your NODE_ENV is", process.env.NODE_ENV," : Connecting to your remote MongoDB Atlas test database**********");
+  mongoose.connect(remoteTestdb, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false
   })
-    // .then( () => console.log("NODE_ENV=", process.env.NODE_ENV, "MongoDB test db connected"))
+    .then( () => console.log("********** Remote MongoDB Atlas test db successfully connected! **********"))
     .catch((err) => console.log(err));
-} else if (process.env.NODE_ENV === 'production') {
-  // mongoose.connect('mongodb://localhost/bestB4test', {
+}
+else if (process.env.NODE_ENV === 'local-test') {
+  console.log("**********Your NODE_ENV is", process.env.NODE_ENV," : Connecting to your local test database**********");
+  mongoose.connect('mongodb://localhost/bestB4test', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false
+  })
+    .then( () => console.log("********** Local Mongo test db successfully connected! **********"))
+    .catch((err) => console.log(err));
+}
+else if (process.env.NODE_ENV === 'local-development') {
+  console.log("**********Your NODE_ENV is", process.env.NODE_ENV," : Connecting to your local development database**********");
+  mongoose.connect('mongodb://localhost/bestB4', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false
+  })
+    .then( () => console.log("********** Local Mongo dev db successfully connected! **********"))
+    .catch((err) => console.log(err));
+}
+else if (process.env.NODE_ENV === 'production') {
   mongoose.connect(proddb, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false
   })
-    // .then( () => console.log("NODE_ENV=", process.env.NODE_ENV, "MongoDB production db connected"))
     .catch((err) => console.log(err));
-} else {
-  // mongoose.connect('mongodb://localhost/bestB4', {
-  mongoose.connect(devdb, {
+}
+else { //i.e. dev (remote)
+  console.log("**********Your NODE_ENV is", process.env.NODE_ENV," : Connecting to your Remote MongoDB Atlas dev database**********");
+  mongoose.connect(remoteDevdb, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false
   })
-    .then( () => console.log("NODE_ENV=", process.env.NODE_ENV, ": MongoDB dev db connected"))
+    .then( () => console.log("********** Remote MongoDB Atlas dev db successfully connected! **********"))
     .catch((err) => console.log(err));
 }
 
-// The current path is:
 app.use('/api/users', require('./routes/api/users'));
-
-// I want to require '/app/routes/api/users.js',
-// So I will use:
-// path.join(__dirname, './app', './routes/api/users')
-// app.use('/api/users', require(path.join(__dirname, './', './routes/api/users')));
-
 app.use('/api/auth', require('./routes/api/auth'));
-// app.use('/api/users', require(path.join(__dirname, './', './routes/api/auth')));
-
 app.use('/api/posts', require('./routes/api/posts'));
-// app.use('/api/users', require(path.join(__dirname, './', './routes/api/posts')));
-
 app.use('/api/login', require('./routes/api/login'));
-// app.use('/api/users', require(path.join(__dirname, './', './routes/api/login')));
+app.use('/api/messages', require('./routes/api/messages'));
+
 
 module.exports = app
-
-  // .then(() => {
-  // console.log("We have connected")
-  // })
