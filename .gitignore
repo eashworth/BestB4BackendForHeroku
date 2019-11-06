@@ -1,2 +1,6 @@
 node_modules/
+config/keys.js
+config/production.js
+config/development.js
+config/test.js
 .env
