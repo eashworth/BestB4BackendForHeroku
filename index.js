@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
@@ -9,16 +11,17 @@ app.use(express.json({ extended: false }))
 
 app.get('/', (req, res) => res.send('Hello'));
 
-const testdb = require('./config/keys').mongoURIbestb4test;
-const db = require('./config/keys').mongoURIbestb4dev;
+const testdb = process.env.MONGO_URI_BESTB4_TEST;
+const db = process.env.MONGO_URI_BESTB4_DEV;
 
-if (process.env.NODE_ENV === 'test') {
+if (process.env.NODE_ENV === 'jest') {
+  // mongoose.connect('mongodb://localhost/bestB4', {
   mongoose.connect(testdb, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false
   })
-    .then( () => console.log("MongoDB test db connected"))
+    .then( () => console.log("NODE_ENV=", process.env.NODE_ENV, "MongoDB test db connected"))
     .catch((err) => console.log(err));
 } else {
   // mongoose.connect('mongodb://localhost/bestB4', {
@@ -27,7 +30,7 @@ if (process.env.NODE_ENV === 'test') {
     useUnifiedTopology: true,
     useFindAndModify: false
   })
-    .then( () => console.log("MongoDB dev db connected"))
+    .then( () => console.log("NODE_ENV=", process.env.NODE_ENV, ": MongoDB dev db connected"))
     .catch((err) => console.log(err));
 }
 

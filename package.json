@@ -4,8 +4,8 @@
   "description": "Final Project",
   "main": "index.js",
   "scripts": {
-    "start": "node server",
-    "server": "nodemon",
+    "start": "NODE_ENV=development node server",
+    "server": "nodemon dotenv/config ",
     "test": "NODE_ENV= jest"
   },
   "repository": {
@@ -21,6 +21,7 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "config": "^3.2.4",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-validator": "^6.2.0",
     "gravatar": "^1.8.0",
