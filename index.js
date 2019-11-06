@@ -12,20 +12,30 @@ app.use(express.json({ extended: false }))
 app.get('/', (req, res) => res.send('Hello'));
 
 const testdb = process.env.MONGO_URI_BESTB4_TEST;
-const db = process.env.MONGO_URI_BESTB4_DEV;
+const proddb = process.env.MONGO_URI_BESTB4_PROD;
+const devdb = process.env.MONGO_URI_BESTB4_DEV;
 
-if (process.env.NODE_ENV === 'jest') {
-  // mongoose.connect('mongodb://localhost/bestB4', {
+if (process.env.NODE_ENV === 'test') {
+  // mongoose.connect('mongodb://localhost/bestB4test', {
   mongoose.connect(testdb, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false
   })
-    .then( () => console.log("NODE_ENV=", process.env.NODE_ENV, "MongoDB test db connected"))
+    // .then( () => console.log("NODE_ENV=", process.env.NODE_ENV, "MongoDB test db connected"))
+    .catch((err) => console.log(err));
+} else if (process.env.NODE_ENV === 'production') {
+  // mongoose.connect('mongodb://localhost/bestB4test', {
+  mongoose.connect(proddb, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false
+  })
+    // .then( () => console.log("NODE_ENV=", process.env.NODE_ENV, "MongoDB production db connected"))
     .catch((err) => console.log(err));
 } else {
   // mongoose.connect('mongodb://localhost/bestB4', {
-  mongoose.connect(db, {
+  mongoose.connect(devdb, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false

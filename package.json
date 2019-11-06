@@ -4,9 +4,10 @@
   "description": "Final Project",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=development node server",
+    "start": "NODE_ENV=production node server",
+    "start-dev": "NODE_ENV=development node server",
     "server": "nodemon dotenv/config ",
-    "test": "NODE_ENV= jest"
+    "test": "NODE_ENV=test jest"
   },
   "repository": {
     "type": "git",
